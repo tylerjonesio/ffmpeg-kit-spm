@@ -48,7 +48,7 @@ for f in $(ls "$XCFRAMEWORK_DIR")
 do
     echo "Adding $f to package list..."
     PACAKGE="$XCFRAMEWORK_DIR/$f"
-    zip -r "$PACAKGE.zip" $PACAKGE
+    ditto -c -k --sequesterRsrc --keepParent $PACAKGE "$PACAKGE.zip"
     PACKAGE_NAME=$(basename "$f" .xcframework)
     PACKAGE_SUM=$(sha256sum "$PACAKGE.zip" | awk '{ print $1 }')
     PACKAGE_STRING="$PACKAGE_STRING\"$PACKAGE_NAME\": \"$PACKAGE_SUM\", "
@@ -56,3 +56,6 @@ done
 
 PACKAGE_STRING=$(basename "$PACKAGE_STRING" ", ")
 sed -i '' -e "s/let frameworks =.*/let frameworks = [$PACKAGE_STRING]/" Package.swift
+
+echo "Copying License..."
+cp -f .tmp/ffmpeg-kit/LICENSE ./
