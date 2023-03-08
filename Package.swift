@@ -3,14 +3,13 @@
 
 import PackageDescription
 
-let release = "v5.1.1"
+let release = "min.v5.1.2.1"
 
-let frameworks = ["ffmpegkit": "69e1ebce712698722bd72e38f5cd6b97209b767c045958484af10c0d5f769532", "libavcodec": "2c3d3133fc57487382cc486bfd14f0552b2261447efcfe68ea648d80ecdd877c", "libavdevice": "f9a1d46029f4ff603325119686b445cea581b3e678682ac284d036967b9e6e24", "libavfilter": "985209d3ca5dec0dfb82d47d1b2cf49c35c17f6fe0def7ccda50b69d19b13dfc", "libavformat": "aaf8ad482f1887a5f08fe6fd8f24b2b02801571b0e96fbb7a7f18546f2d69880", "libavutil": "c1f04b391a874674a380e99464f11631ea62dd51fa9dcc0789c4cc3d56ab5198", "libswresample": "35ccf3b51dd35ddc70ae0a49049f192ecf273cc14c05ae849a3a07dffffec865", "libswscale": "b1af830516c5f99bad5f352ade94cbff748ff2515e4887495109dc6c044c4fdb"]
+let frameworks = ["ffmpegkit": "ef61a9f2ad0856296ebc4e83d8ca303e61675df6fefcad0f192fab496d6dadef", "libavcodec": "3b45430906015c27bc81b6cfcd5d6e299348367bc460689c48f3d6a2524289d8", "libavdevice": "856f1e81c8d19eeb21f6c9125eab5a7b7505bb4921b5738f73aa76bb2298322d", "libavfilter": "c7a4e96a988efdba25c1665b192894f599c6100f14da411c769ac3db8a4596e3", "libavformat": "0c0fc6ecd9922e7fce1171589c85ff9e2866f5705b95a83da86ec9cb6312ba0d", "libavutil": "dccb0c70d0c6d439d2651ceafcf95056a9f6a2015a8303afb1f8b165a7ac588c", "libswresample": "5afb02aa64db8618c669ed80c102c06c36bdded6ee4251be2a0f5031b2002540", "libswscale": "02038df4b6e5d63488bb5d8ce177651eebefde89689475f5f974328bbe92441e"]
 
 func xcframework(_ package: Dictionary<String, String>.Element) -> Target {
-//    let url = "https://github.com/tylerjonesio/ffmpeg-kit-spm/releases/download/\(release)/\(package.key).xcframework.zip"
-//    return .binaryTarget(name: package.key, url: url, checksum: package.value)
-    return .binaryTarget(name: package.key, path: ".tmp/ffmpeg-kit/prebuilt/bundle-apple-xcframework/\(package.key).xcframework")
+    let url = "https://github.com/tylerjonesio/ffmpeg-kit-spm/releases/download/\(release)/\(package.key).xcframework.zip"
+    return .binaryTarget(name: package.key, url: url, checksum: package.value)
 }
 
 let linkerSettings: [LinkerSetting] = [
@@ -39,7 +38,7 @@ let package = Package(
             name: "FFmpeg",
             type: .dynamic,
             targets: ["FFmpeg"] + libAVFrameworks.map { $0.key }),
-    ],
+    ] + libAVFrameworks.map { .library(name: $0.key, targets: [$0.key]) },
     dependencies: [],
     targets: [
         .target(
