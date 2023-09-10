@@ -3,9 +3,9 @@
 
 import PackageDescription
 
-let release = "min.v5.1.2.4"
+let release = "min.v5.1.2.5"
 
-let frameworks = ["ffmpegkit": "40771eff65426e20cb6cf918f83598948066a5a6ee1e5b0a77bb93bef5ba2576", "libavcodec": "d84aba273bcf388c9574c7d1935dad307d68c8640505d16a25ee6a6a9f5a3795", "libavdevice": "9660be860445d78261e48551453f3d94d7f3e8711cefb69f5e4188f5df9a60b5", "libavfilter": "3cf94014d25336a27cb3c1440ce6e31469304def901d219a37f3a078b4eed9bc", "libavformat": "28e80de0b7572aedfcbd18630c2f53da35e106e04397c6aa590cb84143007661", "libavutil": "2b19dcfde0434ce83300806db2b10e5af84d0962b8a28e9486563f1ea33bd293", "libswresample": "0afc21c9f0335edd6cdd6c3695b33d88233765a26fc1b3764857aab7e36b02d7", "libswscale": "4e9d8da69765cac804fe1b1ace7c87ba2236c2fb7b5ca9e76437ba2e3e7f8dcc"]
+let frameworks = ["ffmpegkit": "e891de83cb6bc2b800bc5c3b540d67bd48897de5a7161b347b017fa586351e9e", "libavcodec": "fe34ad31192af03f68cfc86b6368e1fe77d09b77511b1d3e8c6b5da7427c42cf", "libavdevice": "d457381c288b58641aeb1b8104c231ebdbc837e4a8c960280a9e444e7aad05fc", "libavfilter": "6267955018ec0192295dc0fa7edef60eb7d1afec5a28fe969c690f11b79184aa", "libavformat": "375257b3d3904d9af34105b55199d0289ef16e73abe4b418ef270242b9f88e78", "libavutil": "5da8b504b0ba0a6b1391734f61a9fcef3f41e3dd8795f0e0a69a41bf163c6b99", "libswresample": "89733380d4fcda520a7584f22d6b189ff74acd066b70c3e301d94ea39ad3a5d2", "libswscale": "9c0eeeda3428ca3752d00c85f143a6fd4a1236793b4845fa69057944df7e75f1"]
 
 func xcframework(_ package: Dictionary<String, String>.Element) -> Target {
     let url = "https://github.com/tylerjonesio/ffmpeg-kit-spm/releases/download/\(release)/\(package.key).xcframework.zip"
@@ -28,7 +28,7 @@ let libAVFrameworks = frameworks.filter({ $0.key != "ffmpegkit" })
 
 let package = Package(
     name: "ffmpeg-kit-spm",
-    platforms: [.iOS(.v12), .macOS(.v10_15), .tvOS(.v11), .watchOS(.v9)],
+    platforms: [.iOS(.v12), .macOS(.v10_15), .tvOS(.v11), .watchOS(.v7)],
     products: [
         .library(
             name: "FFmpeg-Kit",

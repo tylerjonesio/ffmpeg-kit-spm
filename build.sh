@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-FFMPEG_KIT_TAG="min.v5.1.2.4"
+FFMPEG_KIT_TAG="min.v5.1.2.5"
 FFMPEG_KIT_CHECKOUT="origin/develop"
 #FFMPEG_KIT_CHECKOUT="origin/tags/$FFMPEG_KIT_TAG"
 
@@ -26,16 +26,16 @@ echo "Install build dependencies..."
 brew install autoconf automake libtool pkg-config curl git doxygen nasm bison wget gettext
 
 echo "Building for iOS..."
-./ios.sh --enable-ios-audiotoolbox --enable-ios-avfoundation --enable-ios-videotoolbox --enable-ios-zlib --enable-ios-bzip2 --no-bitcode --enable-gmp --enable-gnutls -x -d
+./ios.sh --enable-ios-audiotoolbox --enable-ios-avfoundation --enable-ios-videotoolbox --enable-ios-zlib --enable-ios-bzip2 --no-bitcode --enable-gmp --enable-gnutls -x
 echo "Building for tvOS..."
-./tvos.sh --enable-tvos-audiotoolbox --enable-tvos-videotoolbox --enable-tvos-zlib --enable-tvos-bzip2 --no-bitcode --enable-gmp --enable-gnutls -x -d
+./tvos.sh --enable-tvos-audiotoolbox --enable-tvos-videotoolbox --enable-tvos-zlib --enable-tvos-bzip2 --no-bitcode --enable-gmp --enable-gnutls -x
 echo "Building for macOS..."
-./macos.sh --enable-macos-audiotoolbox --enable-macos-avfoundation --enable-macos-bzip2 --enable-macos-videotoolbox --enable-macos-zlib --enable-macos-coreimage --enable-macos-opencl --enable-macos-opengl --enable-gmp --enable-gnutls -x -d
+./macos.sh --enable-macos-audiotoolbox --enable-macos-avfoundation --enable-macos-bzip2 --enable-macos-videotoolbox --enable-macos-zlib --enable-macos-coreimage --enable-macos-opencl --enable-macos-opengl --enable-gmp --enable-gnutls -x
 echo "Building for watchOS..."
-#./watchos.sh --enable-watchos-zlib --enable-watchos-bzip2 --no-bitcode --enable-gmp --enable-gnutls -x d
+./watchos.sh --enable-watchos-zlib --enable-watchos-bzip2 --no-bitcode --enable-gmp --enable-gnutls -x
 
 echo "Bundling final XCFramework"
-./apple.sh
+./apple.sh #--disable-watchos --disable-watchsimulator
 
 cd ../../
 
@@ -62,3 +62,26 @@ sed -i '' -e "s/let frameworks =.*/let frameworks = [$PACKAGE_STRING]/" Package.
 
 echo "Copying License..."
 cp -f .tmp/ffmpeg-kit/LICENSE ./
+
+echo "Committing Changes..."
+git add -u
+git commit -m "Creating release for $FFMPEG_KIT_TAG"
+
+echo "Creating Tag..."
+git tag $FFMPEG_KIT_TAG
+git push origin --tags
+
+echo "Creating Release..."
+gh release create -d $FFMPEG_KIT_TAG -t "FFmpegKit SPM $FFMPEG_KIT_TAG" --verify-tag
+
+echo "Uploading Binaries..."
+for f in $(ls "$XCFRAMEWORK_DIR")
+do
+    if [[ $f == *.zip ]]; then
+        gh release upload $FFMPEG_KIT_TAG $f
+    fi
+done
+
+gh release edit $FFMPEG_KIT_TAG --draft=false
+
+echo "All done!"
