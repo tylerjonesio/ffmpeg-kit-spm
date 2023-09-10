@@ -33,9 +33,9 @@ echo "Building for iOS..."
 #./macos.sh --enable-macos-audiotoolbox --enable-macos-avfoundation --enable-macos-bzip2 --enable-macos-videotoolbox --enable-macos-zlib --enable-macos-coreimage --enable-macos-opencl --enable-macos-opengl --enable-gmp --enable-gnutls -x
 #echo "Building for watchOS..."
 ##./watchos.sh --enable-watchos-zlib --enable-watchos-bzip2 --no-bitcode --enable-gmp --enable-gnutls -x
-#
-#echo "Bundling final XCFramework"
-#./apple.sh --disable-watchos --disable-watchsimulator
+
+echo "Bundling final XCFramework"
+./apple.sh --disable-watchos --disable-watchsimulator
 
 cd ../../
 
