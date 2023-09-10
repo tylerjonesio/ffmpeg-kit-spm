@@ -69,6 +69,7 @@ git commit -m "Creating release for $FFMPEG_KIT_TAG"
 
 echo "Creating Tag..."
 git tag $FFMPEG_KIT_TAG
+git push
 git push origin --tags
 
 echo "Creating Release..."
