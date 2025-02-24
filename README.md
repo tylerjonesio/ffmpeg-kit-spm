@@ -1,5 +1,8 @@
 # FFmpegKit SPM
 
+> [!WARNING]  
+> Since the upstream [FFmpegKit](https://github.com/arthenica/ffmpeg-kit) project has been retired, this one has been retired as well.
+
 This is a Swift Package Manager compatible version of [FFmpegKit](https://github.com/arthenica/ffmpeg-kit). 
 It distributes and bundles the ffmpeg-kit-https version for iOS, macOS and tvOS as a single xcframework. 
 
